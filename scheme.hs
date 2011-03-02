@@ -254,6 +254,9 @@ unpackEquals arg1 arg2 (AnyUnpacker unpacker) =
         return $ unpacked1 == unpacked2
     `catchError` (const $ return False)
 
+-- # TODO
+-- Exercise 2:
+-- equal? has a bug in that a list of values is compared using eqv? instead of equal?. For example, (equal? '(1 "2") '(1 2)) = #f, while you'd expect it to be true. Change equal? so that it continues to ignore types as it recurses into list structures. You can either do this explicitly, following the example in eqv?, or factor the list clause into a separate helper function that is parameterized by the equality testing function. 
 equal :: [LispVal] -> ThrowsError LispVal
 equal [arg1, arg2] = do
     primitiveEquals <- liftM or $ mapM (unpackEquals arg1 arg2)
@@ -261,6 +264,14 @@ equal [arg1, arg2] = do
     eqvEquals <- eqv [arg1, arg2]
     return $ Bool $ (primitiveEquals || let (Bool x) = eqvEquals in x)
 equal badArgList = throwError $ NumArgs 2 badArgList
+
+-- # TODO
+-- Implement cond and case expressions.
+-- http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-7.html#%_idx_106
+-- http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-7.html#%_idx_114
+--
+-- Add the rest of the string functions. You don't yet know enough to do string-set!; this is difficult to implement in Haskell, but you'll have enough information after the next 2 sections
+-- http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-9.html#%_sec_6.3.5
 
 -- Error checking
 data LispError = NumArgs Integer [LispVal]
