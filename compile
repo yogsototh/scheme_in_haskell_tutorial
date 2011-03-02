@@ -1,1 +1,1 @@
-ghc -package parsec -fglasgow-exts -o parser --make scheme.hs
+ghc -package parsec -fglasgow-exts -o lisp --make scheme.hs
